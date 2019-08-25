@@ -1,14 +1,29 @@
-const http = require('http');
+//TOOLS
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
 
-const hostname = '127.0.0.1';
-const port = 3000;
+//FOLDERS
+const patients = require('./models/patients')
+const middleware = require('./models/middleware')
+const cors = require('cors')
+app.use(cors())
 
-const server = http.createServer(function(req, res) {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
-});
+//ROUTE INITIALIZATION
+const router = express.Router()
+router.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false })) // Parse application/x-www-form-urlencoded
+app.use(router)
 
-server.listen(port, hostname, function() {
-  console.log('Server running at http://'+ hostname + ':' + port + '/');
-});
+//CONSTANTS
+const port = 10000;
+const hostname = 'localhost'
+//ROUTING
+app.post('/login', middleware.login) //login
+app.get('/pacientes', patients.showPatients)//list of patients 
+
+app.listen( port,hostname, function() {
+  console.log(`Servidor express iniciado en http://${hostname}:${port}`)
+})
+
+module.exports = app
