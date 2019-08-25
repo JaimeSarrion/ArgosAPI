@@ -39,3 +39,28 @@ exports.getLoginUser = function(res, email, callback){ //Return all the patients
     }
   })
 }
+
+exports.getUserById = function(res,id,callback){
+  mysqlPool.getConnection(function(err, db) {
+    if(!err){
+      db.query('SELECT * FROM medicos WHERE id=?', [id], function(err, rows) {
+        if(!err){
+          if(rows.length>0){
+            callback(rows[0])
+          } else{
+            callback(null)
+          }
+        } else{
+          console.log(err.message)
+          res.status(500)
+          res.send({'error':'Problema con la base de datos'})
+        }
+        db.release()
+      })
+    } else{
+      console.log(err.message)
+      res.status(500)
+      res.send({'error':'Problema de conexión con la base de datos'})
+    }
+  })
+}

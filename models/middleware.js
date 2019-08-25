@@ -47,3 +47,40 @@ exports.login = function(req , res){
         res.send({'error' : 'Error en el login' + error_email + error_pass})
     }
 }
+
+
+exports.isLoged = function(req, res, next){//Check is the user is logged
+    if(req.headers.authorization){
+        var token = req.headers.authorization
+        try{
+            var decoded = jwt.decode(token, secret)
+        } catch(e){
+            res.status(401)
+            res.send({'error':'El token está corrupto'})
+        }
+        if (decoded && decoded.id) {
+            if(decoded.exp <= moment.unix()){
+                res.status(401)
+                res.send({'error':'El token ha expirado'})
+            } else{
+                database.getUser_id(res, decoded.id, function(user){
+                    if(user == null){
+                        res.status(401)
+                        res.send({'error':'Hay un problema con tu usuario (No existe)'})
+                    } else if(user.username != decoded.username){
+                        res.status(401)
+                        res.send({'error':'Hay un problema con tu usuario y el token'})
+                    } else if(user.password && decoded.password && user.password != decoded.password){
+                        res.status(401)
+                        res.send({'error':'Hay un problema con tu password y la del token'})
+                    } else{
+                        next()
+                    }
+                })
+            }
+        }
+    } else{
+        res.status(401)
+        res.send({'error':'Sin cabeceras de autorizacion (Sin loguear)'})
+    }
+}
