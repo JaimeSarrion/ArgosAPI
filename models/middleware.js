@@ -31,7 +31,7 @@ exports.login = function(req , res){
                     res.send({'error':'Credenciales incorrectas'})
                 }else{
                     var array = new Array()
-                    array.push({'id':user.codMedico, 'email':email, 'token':createToken(user.id, email, user.pass)})
+                    array.push({'id':user.codMedico, 'email':email, 'token':createToken(user.codMedico, user.email, user.password)})
                     res.status(200)
                     res.send(array)
                 }
@@ -53,7 +53,7 @@ exports.isLoged = function(req, res, next){//Check is the user is logged
     if(req.headers.authorization){
         var token = req.headers.authorization
         try{
-            var decoded = jwt.decode(token, secret)
+            var decoded = decode(token)
         } catch(e){
             res.status(401)
             res.send({'error':'El token está corrupto'})
@@ -63,7 +63,7 @@ exports.isLoged = function(req, res, next){//Check is the user is logged
                 res.status(401)
                 res.send({'error':'El token ha expirado'})
             } else{
-                database.getUser_id(res, decoded.id, function(user){
+                database.getUserById(res, decoded.id, function(user){
                     if(user == null){
                         res.status(401)
                         res.send({'error':'Hay un problema con tu usuario (No existe)'})
@@ -83,4 +83,9 @@ exports.isLoged = function(req, res, next){//Check is the user is logged
         res.status(401)
         res.send({'error':'Sin cabeceras de autorizacion (Sin loguear)'})
     }
+}
+
+exports.decode = decode = function(token){
+    var res = jwt.decode(token, secret)
+    return res;
 }
