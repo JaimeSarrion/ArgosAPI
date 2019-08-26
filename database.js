@@ -86,6 +86,26 @@ exports.getUserById = function(res,id,callback){
   })
 }
 
-exports.setNewDoctor = function(res, user, callback){
-  
+exports.createDoctor = function(res, doctor, callback){
+  mysqlPool.getConnection(function(err, db) {
+    if(!err){
+      
+      db.query('INSERT INTO `medicos` (`Nombre`, `Apellidos`, `dni`, `email`, `password`) VALUES ( ?, ?, ?, ?, ?);',
+       [doctor.nombre, doctor.apellidos, doctor.dni, doctor.email, doctor.password], function(err, rows) {
+        if(!err){
+          console.log(rows)
+          callback(rows)
+        } else{
+          console.log(err.message)
+          res.status(500)
+          res.send({'error':'Problema con la base de datos'})
+        }
+        db.release()
+      })
+    } else{
+      console.log(err.message)
+      res.status(500)
+      res.send({'error':'Problema de conexión con la base de datos'})
+    }
+  })
 }
