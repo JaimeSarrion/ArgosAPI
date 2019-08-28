@@ -1,7 +1,27 @@
 //TOOLS
 const express = require('express')
 const bodyParser = require('body-parser')
+const https = require('https')
+const fs = require('fs');
+
 const app = express()
+
+
+var https_options = {
+
+  key: fs.readFileSync("/ruta/de/llaveprivada.key"),
+
+  cert: fs.readFileSync("/ruta/de/tudominio.crt"),
+
+  ca: [
+
+    fs.readFileSync('/ruta/de/CA_root.crt'),
+
+    fs.readFileSync('/ruta/de/CA-bundle.crt')
+
+  ]
+};
+
 
 //FOLDERS
 const patients = require('./models/patients')
@@ -18,7 +38,7 @@ app.use(router)
 
 //CONSTANTS
 const port = 10000;
-const hostname = 'localhost'
+const hostname = process.env.PORT
 
 //ROUTING
 app.post('/login', middleware.login) //login
@@ -27,8 +47,22 @@ app.post('/registro', doctors.register)//sign up
 
 
 //SERVER
+
+/*
+//LOCAL
 app.listen( port,hostname, function() {
   console.log(`Servidor express iniciado en http://${hostname}:${port}`)
 })
+*/
+
+/*
+HEROKU
+*/
+
+var port_number = app.listen(hostname || port, () => {
+  console.log(`Server running at http://${process.env.PORT}:${port}/`);
+});
+
+app.listen(port_number);
 
 module.exports = app

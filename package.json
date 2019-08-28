@@ -1,0 +1,31 @@
+{
+  "name": "argosapi",
+  "version": "1.0.0",
+  "description": "Api for the ArgosApp",
+  "main": "database.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
+    "jwt-simple": "^0.5.6",
+    "moment": "^2.24.0",
+    "mysql": "^2.17.1",
+    "nodemon": "^1.19.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JaimeSarrion/ArgosAPI.git"
+  },
+  "author": "Jaime Sarrion",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JaimeSarrion/ArgosAPI/issues"
+  },
+  "homepage": "https://github.com/JaimeSarrion/ArgosAPI#readme"
+}
