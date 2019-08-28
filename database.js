@@ -1,10 +1,10 @@
 const mysql = require('mysql')
 
 const db_config = { //si necesitas las credenciales contacta conmigo
-  database : 'argosbd',
-  host     : 'localhost',
-  user     : 'argosbd',
-  password : 'argos1234' 
+  database : 'zvcyqw0ft11vuoho',
+  host     : 'p1us8ottbqwio8hv.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+  user     : 'dq03p6antrkootfi',
+  password : 'n9gc6ycixcs3ljs8' 
 }
 
 exports.db_config = db_config

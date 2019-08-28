@@ -1,26 +1,7 @@
 //TOOLS
 const express = require('express')
 const bodyParser = require('body-parser')
-const https = require('https')
-const fs = require('fs');
-
 const app = express()
-
-
-var https_options = {
-
-  key: fs.readFileSync("/ruta/de/llaveprivada.key"),
-
-  cert: fs.readFileSync("/ruta/de/tudominio.crt"),
-
-  ca: [
-
-    fs.readFileSync('/ruta/de/CA_root.crt'),
-
-    fs.readFileSync('/ruta/de/CA-bundle.crt')
-
-  ]
-};
 
 
 //FOLDERS
