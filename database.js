@@ -140,12 +140,19 @@ exports.getMediciones = function(res, paciente, callback){
     }
   })
 }
+/*INSERT INTO `mediciones`(`CodPaciente`, `Pulsaciones`, `Pasos`, `Temperatura`, `Fecha`) VALUES ()*/
 
 exports.setMediciones = function(res, medicion, callback){
-  mysqlPool.getConnection(function(err){
+  mysqlPool.getConnection(function(err, db) {
     if (!err) {
-      db.query('INSERT INTO `medicos` (`Nombre`, `Apellidos`, `dni`, `email`, `password`) VALUES ( ?, ?, ?, ?, ?);',
-       [doctor.nombre, doctor.apellidos, doctor.dni, doctor.email, doctor.password], function(err, rows) {
+      let date = new Date()
+      let day = date.getDate()
+      let month = date.getMonth() + 1
+      let year = date.getFullYear()
+      let fecha = year + '-' + month + '-' + day
+      console.log(fecha)
+      db.query('INSERT INTO `mediciones`(`CodPaciente`, `Pulsaciones`, `Pasos`, `Temperatura`, `Fecha`) VALUES (? , ? , ? , ? , ?);',
+       [medicion.codpaciente, medicion.medicion, '0', '0', fecha], function(err, rows) {
         if(!err){
           console.log(rows)
           callback(rows)

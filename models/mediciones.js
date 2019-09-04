@@ -19,8 +19,9 @@ exports.showMediciones = function(req, res){
 exports.setMediciones = function(req, res){
     var medicion = {
         codpaciente: req.headers.codpaciente,
-        medicion: req.header.medicion
+        medicion: req.headers.medicion
     }
+    console.log(medicion)
     if (medicion.codpaciente && medicion.codpaciente != '' && medicion.medicion && medicion.medicion != '') {
         database.setMediciones(res, medicion, function(mediciones){
             if(mediciones != null){
@@ -31,5 +32,8 @@ exports.setMediciones = function(req, res){
                 res.send({'error' : 'No es posible guardar mediciones'})
             }
         })
+    }else{
+        res.status(400)
+        res.send({'error' : 'Faltan datos'})
     }
 }
