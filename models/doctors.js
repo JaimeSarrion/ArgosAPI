@@ -21,6 +21,5 @@ exports.register = function(req , res){
     }else{
         res.status(400)
         res.send({'error':'Faltan datos o estan incompletos'})
-    }
-    
+    }   
 }
